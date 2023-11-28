@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
-  Dimensions,
+  Dimensions
 } from "react-native";
 
 const { height, width } = Dimensions.get("window");
@@ -19,12 +19,12 @@ import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
 import { faEyeSlash } from "@fortawesome/free-solid-svg-icons/faEyeSlash";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import axios from "axios";
 
 import { validatePassword } from "../../Helpers/Helpers";
-import { useRoute } from "@react-navigation/native";
+import { useRoute } from '@react-navigation/native';
 
 export default function CambiarContraseñaPerfil({ navigation }) {
   const [data, setData] = React.useState({
@@ -52,43 +52,41 @@ export default function CambiarContraseñaPerfil({ navigation }) {
   const mailUsuario = route.params.emailUsuario;
 
   const changePassword = async (password, newPassword) => {
+
     let notification = JSON.stringify({
       // email: "ignacio.balastegui@davinci.edu.ar",
       // password: "Password123"
       password: password,
-      newPassword: newPassword,
-    });
+      newPassword: newPassword
+    })
 
-    const token = await AsyncStorage.getItem("@storage_Key");
+    const token = await AsyncStorage.getItem('@storage_Key');
 
     let headers = {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    };
 
-    const peticion = await axios
-      .put(
-        "https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/user/modify-password",
-        notification,
-        headers
-      )
-      .then(async (res) => {
-        navigation.navigate("PantallaCodigoCambiarContraseñaUsuario", {
-          emailUsuario: mailUsuario,
-        });
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    }
 
-        setLoading(false);
+    const peticion = await axios.put("https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/user/modify-password", notification, headers)
+      .then(async res => {
+
+        navigation.navigate("PantallaCodigoCambiarContraseñaUsuario",{emailUsuario: mailUsuario})
+
+        setLoading(false)
       })
-      .catch(
-        (error) => console.log(error),
+      .catch(error =>
+        console.log(error),
         //console.log(token),
         setErrorPassword("error"),
         setLoading(false)
       );
-  };
+
+  }
+
 
   const cambiarContraseñaPerfil = () => {
     if (!validateData()) {
@@ -121,15 +119,8 @@ export default function CambiarContraseñaPerfil({ navigation }) {
       isValid = false;
     }
 
-    if (
-      !validatePassword(formData.newPassword) &
-      (formData.newPassword !== "")
-    ) {
-      setErrorNewPassword(
-        "Contraseña invalida." +
-          "\n" +
-          "Debe tener al menos 8 coracteres, 1 mayuscula y 1 numero."
-      );
+    if (!validatePassword(formData.newPassword) & formData.newPassword !== "") {
+      setErrorNewPassword("Contraseña invalida." + "\n" + "Debe tener al menos 8 coracteres, 1 mayuscula y 1 numero.");
       isValid = false;
     }
 
@@ -139,49 +130,28 @@ export default function CambiarContraseñaPerfil({ navigation }) {
   return (
     <View style={Styles.container}>
       <View style={Styles.formContainer}>
-        <InputContraseña
-          icono={faLock}
-          placeholder="Ingresar contraseña actual"
-          secureTextEntry={data.secureTextEntry ? true : false}
-          errorMessage={errorPassword}
-          onChange={(e) => onChange(e, "password")}
-          defaultValue={formData.password}
-          onPress={updateSecureTextEntry}
-          iconoOjo={data.secureTextEntry ? faEyeSlash : faEye}
-        />
+
+        <InputContraseña icono={faLock} placeholder="Ingresar contraseña actual" secureTextEntry={data.secureTextEntry ? true : false}
+          errorMessage={errorPassword} onChange={(e) => onChange(e, "password")} defaultValue={formData.password} onPress={updateSecureTextEntry}
+          iconoOjo={data.secureTextEntry ? faEyeSlash : faEye} />
         {errorPassword !== null ? (
           <Text style={Styles.mensajeError}>{errorPassword}</Text>
         ) : null}
 
-        <InputContraseña
-          icono={faLock}
-          placeholder="Ingresar nueva contraseña"
-          secureTextEntry={data.secureTextEntry ? true : false}
-          errorMessage={errorNewPassword}
-          onChange={(e) => onChange(e, "newPassword")}
-          defaultValue={formData.newPassword}
-          onPress={updateSecureTextEntry}
-          iconoOjo={data.secureTextEntry ? faEyeSlash : faEye}
-        />
+        <InputContraseña icono={faLock} placeholder="Ingresar nueva contraseña" secureTextEntry={data.secureTextEntry ? true : false}
+          errorMessage={errorNewPassword} onChange={(e) => onChange(e, "newPassword")} defaultValue={formData.newPassword} onPress={updateSecureTextEntry}
+          iconoOjo={data.secureTextEntry ? faEyeSlash : faEye} />
         {errorNewPassword !== null ? (
           <Text style={Styles.mensajeError}>{errorNewPassword}</Text>
         ) : null}
 
         <View style={Styles.botonCambiarCont}>
           <Boton
-            text={
-              loading ? (
-                <ActivityIndicator color="#fff" size="large" />
-              ) : (
-                "Cambiar contraseña"
-              )
-            }
+            text={loading ? <ActivityIndicator color="#fff" size="large" />
+              :
+              "Cambiar contraseña"}
             //onPress={() => cambiarContraseñaPerfil()}
-            onPress={() =>
-              navigation.navigate("PantallaCodigoCambiarContraseñaUsuario", {
-                emailUsuario: mailUsuario,
-              })
-            }
+           onPress={() => navigation.navigate("PantallaCodigoCambiarContraseñaUsuario",{emailUsuario: mailUsuario})}
             type="principal"
           />
         </View>
@@ -200,13 +170,13 @@ const Styles = StyleSheet.create({
     backgroundColor: "white",
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   formContainer: {
     marginTop: 20,
-    // marginLeft: 17,
-    // marginRight: 17,
-    width: width - 30,
+   // marginLeft: 17,
+   // marginRight: 17,
+   width: width - 30,
     padding: 5,
     borderWidth: 3,
     borderRadius: 30,
@@ -215,12 +185,13 @@ const Styles = StyleSheet.create({
     alignItems: "center",
   },
   botonCambiarCont: {
-    // marginLeft: 60,
-    // marginRight: 60,
+   // marginLeft: 60,
+   // marginRight: 60,
     marginTop: 20,
     marginBottom: 20,
   },
   mensajeError: {
+
     color: "red",
   },
 });

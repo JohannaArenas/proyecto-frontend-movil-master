@@ -14,13 +14,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import Boton from "../../Componentes/Boton/Index";
 import InputNormal from "../../Componentes/InputNormal/Index";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import axios from "axios";
 
 import { faLaptop } from "@fortawesome/free-solid-svg-icons/faLaptop";
 
-import { useRoute } from "@react-navigation/native";
+import { useRoute } from '@react-navigation/native';
 import { useTheme } from "@react-navigation/native";
 
 export default function CambiarIPyPuerto({ navigation }) {
@@ -29,6 +29,7 @@ export default function CambiarIPyPuerto({ navigation }) {
     puerto: "",
     secureTextEntry: true,
   });
+
 
   const [formData, setFormData] = React.useState(defaultFormValues());
   const [errorNumeroIP, setErrorNumeroIP] = React.useState("");
@@ -56,7 +57,7 @@ export default function CambiarIPyPuerto({ navigation }) {
       //deviceCode: codeDisp,
       ip: ip,
       port: port,
-      deviceCode: codeDisp,
+      deviceCode: codeDisp
     });
 
     const token = await AsyncStorage.getItem("@storage_Key");
@@ -100,15 +101,6 @@ export default function CambiarIPyPuerto({ navigation }) {
       isValid = false;
     }
 
-    /*if ((formData.ip !== "111111") & (formData.password !== "")) {
-      setErrorNombreIp("ip incorrecta.");
-      isValid = false;
-    }
-
-    if (formData.ip == "") {
-      setErrorNombreIp("Debes ingresar una ip.");
-      isValid = false;
-    }*/
     return isValid;
   };
 
@@ -117,7 +109,7 @@ export default function CambiarIPyPuerto({ navigation }) {
   return (
     <View style={[Styles.container, { backgroundColor: colors.background }]}>
       <View style={[Styles.formContainer, { backgroundColor: colors.card }]}>
-        <InputNormal
+         <InputNormal
           icono={faLaptop}
           placeholder="Ingresar número IP"
           errorMessage={errorNumeroIP}
@@ -127,8 +119,8 @@ export default function CambiarIPyPuerto({ navigation }) {
         {errorNumeroIP !== null ? (
           <Text style={Styles.mensajeError}>{errorNumeroIP}</Text>
         ) : null}
-
-        <InputNormal
+        
+   <InputNormal
           icono={faLaptop}
           placeholder="Ingresar número puerto"
           errorMessage={errorNumeroPuerto}
@@ -179,7 +171,7 @@ const Styles = StyleSheet.create({
     //marginLeft: 40,
     color: "red",
   },
-  botonCambiarIPyPuerto: {
-    margin: 10,
-  },
+  botonCambiarIPyPuerto:{
+    margin: 10
+  }
 });

@@ -211,7 +211,7 @@ export default function Register({ navigation }) {
     <View style={Styles.container}>
       <ScrollView>
         <View style={Styles.logo}>
-          <Image source={require("../../img/sensor3.png")} />
+          {<Image source={require("../../img/ProyectoMovilLogo.png")} />}
         </View>
 
         <View style={Styles.registerContainer}>

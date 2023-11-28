@@ -1,13 +1,5 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Modal,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, Modal } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import Boton from "../../Componentes/Boton/Index";
 
@@ -19,42 +11,46 @@ import { useEffect } from "react"; //----------------------------------------
 
 import { useTheme } from "@react-navigation/native";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import axios from "axios";
+
 
 import DispositivoInvitado from "../../Componentes/DispositivoInvitado/DispositivoInvitado";
 
 export default function MostrarSensoresInvitado({ navigation }) {
+
   const [dispInvitado, setDispInvitado] = React.useState([]);
 
   const [disp, getDisp] = React.useState(false);
+
 
   // const [codeDisp, getCodeDisp] = React.useState("");
   let codigoDispositivo = "";
 
   const [open, setOpen] = React.useState(false);
 
+
   function handleOnPress() {
     setOpen(!open);
   }
 
   const getObserverDevices = async () => {
-    const token = await AsyncStorage.getItem("@storage_Key");
+
+    const token = await AsyncStorage.getItem('@storage_Key');
     let headers = {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    };
 
-    const peticion = await axios
-      .get(
-        "https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/device/observed",
-        headers
-      )
-      .then(async (res) => {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    }
+
+    const peticion = await axios.get("https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/device/observed", headers)
+      .then(async res => {
+
+
         if (res.data.length == 0) {
           getDisp(false);
 
@@ -64,43 +60,56 @@ export default function MostrarSensoresInvitado({ navigation }) {
         getDisp(true);
         setDispInvitado(res.data);
       })
-      .catch((error) => console.log(error));
-  };
+      .catch(error =>
+        console.log(error),
+
+      );
+
+  }
+
 
   useEffect(() => {
     getObserverDevices();
   }, [dispInvitado]);
 
+
+
+
   const unlinkObserver = async () => {
-    const token = await AsyncStorage.getItem("@storage_Key");
+
+    const token = await AsyncStorage.getItem('@storage_Key');
+
 
     let headers = {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    };
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    }
 
-    const peticion = await axios
-      .delete(
-        "http://192.168.0.133:8081/app_movil_sensor/api/device/" +
-          codigoDispositivo +
-          "/unlink-observer",
-        headers
-      )
-      .then(async (res) => {
-        handleOnPress();
+    const peticion = await axios.delete("http://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/device/" + codigoDispositivo + "/unlink-observer", headers)
+      .then(async res => {
+
+
+        handleOnPress()
       })
-      .catch((error) => console.log(error));
-  };
+      .catch(error =>
+
+        console.log(error)
+
+      );
+
+  }
 
   const { colors } = useTheme();
 
   return (
     <View style={[Styles.container, { backgroundColor: colors.background }]}>
       <View style={Styles.seleccionDispositivo}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+        >
           <TextoDripsy
             sx={{
               fontSize: [12, 14, 16],
@@ -111,6 +120,7 @@ export default function MostrarSensoresInvitado({ navigation }) {
           >
             Dispositivos en Propiedad
           </TextoDripsy>
+
         </TouchableOpacity>
 
         <TouchableOpacity>
@@ -124,77 +134,63 @@ export default function MostrarSensoresInvitado({ navigation }) {
           >
             Dispositivos Vinculados
           </TextoDripsy>
+
         </TouchableOpacity>
       </View>
 
-      {disp ? (
+      {disp ?
+
         <ScrollView>
           {dispInvitado.map((dato, index) => {
+
             codigoDispositivo = dato.deviceCode;
 
-            return (
-              <DispositivoInvitado
-                key={index}
-                nombreDisp={dato.deviceName}
-                invitados={dato.linkedPersons}
-                estadoWifi={dato.deviceWifiState}
-                estadoDisp={dato.deviceStatus}
-                nombreBoton="Ver historial"
-                navegacion={() =>
-                  navigation.navigate("VerHistorial", {
-                    nombre: dato.deviceName,
-                  })
-                }
-                botonTacho={handleOnPress}
-              />
-            );
+            return <DispositivoInvitado key={index} nombreDisp={dato.deviceName} invitados={dato.linkedPersons}
+              estadoWifi={dato.deviceWifiState} estadoDisp={dato.deviceStatus} nombreBoton="Ver historial" navegacion={() =>
+                navigation.navigate("VerHistorial", { nombre: dato.deviceName })} botonTacho={handleOnPress} />
           })}
-        </ScrollView>
-      ) : (
-        <View style={{ marginTop: 20 }}>
-          <Text
-            style={{
-              textAlign: "center",
-              fontWeight: "bold",
-              color: colors.text,
-            }}
-          >
-            No fue invitado en ningun dispositivo
-          </Text>
-        </View>
-      )}
+        </ScrollView> :
 
-      <Modal animationType="slide" transparent={true} visible={open}>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+
+        <View style={{ marginTop: 20 }}>
+          <Text style={{ textAlign: "center", fontWeight: "bold", color: colors.text }}>No fue invitado en ningun dispositivo</Text>
+        </View>}
+
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={open}
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <View style={Styles.modalView}>
-            <Text>
-              ¿Seguro que quiere desvincularse del dispositivo "
-              {codigoDispositivo}"?
-            </Text>
+
+            <Text>¿Seguro que quiere desvincularse del dispositivo "{codigoDispositivo}"?</Text>
 
             <View style={{ flexDirection: "row", marginTop: 20 }}>
-              <View>
-                <Boton
-                  text="Aceptar"
+
+              <View >
+                <Boton text="Aceptar"
                   // onPress={() => navigation.navigate('MostrarSensores')}
                   onPress={() => unlinkObserver()}
                   type="aceptar"
                 />
               </View>
 
-              <View>
-                <Boton
-                  text="Cancelar"
+              <View >
+                <Boton text="Cancelar"
                   onPress={handleOnPress}
                   type="cancelar"
                 />
               </View>
+
             </View>
+
           </View>
         </View>
+
       </Modal>
+
     </View>
   );
 }
@@ -246,4 +242,5 @@ const Styles = StyleSheet.create({
     padding: 7,
     borderRadius: 30,
   },
+
 });

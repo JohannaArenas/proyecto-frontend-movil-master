@@ -11,7 +11,7 @@ import {
   Image,
   ActivityIndicator,
   ScrollView,
-  Dimensions,
+  Dimensions
 } from "react-native";
 
 const { height, width } = Dimensions.get("screen");
@@ -30,10 +30,11 @@ import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 
 import { validateEmail } from "../../Helpers/Helpers";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import axios from "axios";
 import { useTheme } from "@react-navigation/native";
+
 
 export default function Login({ navigation }) {
   const [data, setData] = React.useState({
@@ -53,6 +54,7 @@ export default function Login({ navigation }) {
   const [errorEmail, setErrorEmail] = React.useState("");
   const [errorPassword, setErrorPassword] = React.useState("");
 
+
   const [loading, setLoading] = React.useState(false);
 
   const onChange = (e, type) => {
@@ -60,35 +62,32 @@ export default function Login({ navigation }) {
   };
 
   const getTokenUsuario = async (mail, contraseña) => {
+
     let notification = JSON.stringify({
       email: mail,
-      password: contraseña,
-    });
+      password: contraseña
+    })
 
     let headers = {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    };
-
-    const peticion = await axios
-      .post(
-        "https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/auth/login",
-        notification,
-        headers
-      )
-      .then(async (res) => {
-        await AsyncStorage.setItem("@storage_Key", res.data.token);
-        navigation.navigate("MostrarSensores", { emailUsuario: mail });
-        setErrorEmail("");
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }
+                                    //http://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/auth/login
+    const peticion = await axios.post("https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/auth/login", notification, headers)
+      .then(async res => {
+        await AsyncStorage.setItem('@storage_Key', res.data.token);
+        navigation.navigate("MostrarSensores",{emailUsuario: mail})
+        setErrorEmail("")
       })
-      .catch(
-        (error) => console.log(error),
+      .catch(error =>
+        console.log(error),
         setErrorEmail("Mail o contraseña incorrectos."),
         setLoading(false)
       );
-  };
+
+  }
 
   const loginUser = () => {
     if (!validateData()) {
@@ -115,21 +114,11 @@ export default function Login({ navigation }) {
       setErrorEmail("Debe ingresar un email.");
       isValid = false;
     }
-    /* if (
-       (formData.email !== "ignacio@hola.com") &
-       validateEmail(formData.email)
-     ) {
-       setErrorEmail("Email incorrecto.");
-       isValid = false;
-     }*/
+
     if (formData.password == "") {
       setErrorPassword("Debe ingresar una contraseña.");
       isValid = false;
     }
-    /*if ((formData.password !== "123456") & (formData.password !== "")) {
-      setErrorPassword("Contraseña incorrecta.");
-      isValid = false;
-    }*/
 
     return isValid;
   };
@@ -143,27 +132,16 @@ export default function Login({ navigation }) {
         </View>
 
         <View style={Styles.loginContainer}>
-          <InputNormal
-            icono={faUser}
-            placeholder="Ingrese su mail"
-            errorMessage={errorEmail}
-            onChange={(e) => onChange(e, "email")}
-            defaultValue={formData.email}
-          />
+
+          <InputNormal icono={faUser} placeholder="Ingrese su mail" errorMessage={errorEmail}
+            onChange={(e) => onChange(e, "email")} defaultValue={formData.email} />
           {errorEmail !== null ? (
             <Text style={Styles.mensajeError}>{errorEmail}</Text>
           ) : null}
 
-          <InputContraseña
-            icono={faLock}
-            placeholder="Ingrese su contraseña"
-            secureTextEntry={data.secureTextEntry ? true : false}
-            errorMessage={errorPassword}
-            onChange={(e) => onChange(e, "password")}
-            defaultValue={formData.password}
-            onPress={updateSecureTextEntry}
-            iconoOjo={data.secureTextEntry ? faEyeSlash : faEye}
-          />
+          <InputContraseña icono={faLock} placeholder="Ingrese su contraseña" secureTextEntry={data.secureTextEntry ? true : false}
+            errorMessage={errorPassword} onChange={(e) => onChange(e, "password")} defaultValue={formData.password} onPress={updateSecureTextEntry}
+            iconoOjo={data.secureTextEntry ? faEyeSlash : faEye} />
           {errorPassword !== null ? (
             <Text style={Styles.mensajeError}>{errorPassword}</Text>
           ) : null}
@@ -171,15 +149,11 @@ export default function Login({ navigation }) {
           <View style={{ marginLeft: 60, marginRight: 60, marginTop: 20 }}>
             <View>
               <Boton
-                text={
-                  loading ? (
-                    <ActivityIndicator color="#fff" size="large" />
-                  ) : (
-                    "Ingresar"
-                  )
-                }
+                text={loading ? <ActivityIndicator color="#fff" size="large" />
+                  :
+                  "Ingresar"}
                 onPress={() => loginUser()}
-                // onPress={() => navigation.navigate("MostrarSensores")}
+               // onPress={() => navigation.navigate("MostrarSensores")}
                 type="principal"
               />
             </View>
@@ -225,7 +199,7 @@ const Styles = StyleSheet.create({
     backgroundColor: "white",
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   logo: {
     alignItems: "center",
@@ -233,7 +207,7 @@ const Styles = StyleSheet.create({
     // marginBottom: 30,
     marginTop: 5,
     height: height / 2,
-    width: width - 40,
+    width: width -40,
   },
   loginContainer: {
     //marginLeft: 30,
@@ -245,7 +219,7 @@ const Styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "white",
     marginBottom: 20,
-    elevation: 4,
+    elevation : 4
   },
 
   texto: {

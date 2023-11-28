@@ -88,7 +88,7 @@ export default function InfoDispositivo({ navigation }) {
       }
     }
 
-    const peticionBorrar = await axios.delete("http://192.168.0.133:8081/app_movil_sensor/api/device/" + code + "/delete-owner", headers)
+    const peticionBorrar = await axios.delete("https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/device/" + code + "/delete-owner", headers)
       .then(async res => {
         navigation.navigate("MostrarSensores")
       })
@@ -116,7 +116,7 @@ export default function InfoDispositivo({ navigation }) {
       }
     }
 
-    const peticionCambiarNombre = await axios.put("http://192.168.0.133:8081/app_movil_sensor/api/device/change-name", notification, headers)
+    const peticionCambiarNombre = await axios.put("https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/device/change-name", notification, headers)
       .then(async res => {
 
        // nombre = name;
@@ -153,7 +153,7 @@ export default function InfoDispositivo({ navigation }) {
         }
     }
 
-    const peticion = await axios.post("http://192.168.0.133:8081/app_movil_sensor/api/device/turn-off", notification, headers)
+    const peticion = await axios.post("https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/device/turn-off", notification, headers)
         .then(async res => {
             navigation.goBack();
         })
@@ -181,7 +181,7 @@ const encenderDisp = async (codeDisp) => {
       }
   }
 
-  const peticion = await axios.post("http://192.168.0.133:8081/app_movil_sensor/api/device/turn-on", notification, headers)
+  const peticion = await axios.post("https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/device/turn-on", notification, headers)
       .then(async res => {
           navigation.goBack();
       })

@@ -1,14 +1,5 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import { View, Text, Button, StyleSheet, TouchableOpacity, Modal, ScrollView, Dimensions } from "react-native";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -20,20 +11,21 @@ import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
 
 import { Text as TextoDripsy } from "dripsy";
 
-import Boton from "../../Componentes/Boton/Index";
+import Boton from '../../Componentes/Boton/Index';
 
-import { useRoute } from "@react-navigation/native";
+import { useRoute } from '@react-navigation/native';
 import { useEffect } from "react"; //----------------------------------------
 
 import { useTheme } from "@react-navigation/native";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import axios from "axios";
 
 import Invitado from "../../Componentes/Invitado/Invitado";
 
 export default function VerInvitados({ navigation }) {
+
   const [open, setOpen] = React.useState(false);
 
   function handleOnPress() {
@@ -45,6 +37,7 @@ export default function VerInvitados({ navigation }) {
   const nombreDisp = route.params.nombre;
   const codeDisp = route.params.codigo;
 
+
   const [invitado, setInvitado] = React.useState([]);
 
   const [isInv, getInv] = React.useState(false);
@@ -53,24 +46,23 @@ export default function VerInvitados({ navigation }) {
   let email = "";
 
   const getObserver = async () => {
-    const token = await AsyncStorage.getItem("@storage_Key");
+
+
+    const token = await AsyncStorage.getItem('@storage_Key');
 
     let headers = {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    };
 
-    const peticion = await axios
-      .get(
-        "https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/device/" +
-          codeDisp +
-          "/observer",
-        headers
-      )
-      .then(async (res) => {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    }
+
+
+    const peticion = await axios.get("https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/device/" + codeDisp + "/observer", headers)
+      .then(async res => {
+
         if (res.data.length == 0) {
           getInv(false);
           setInvitado([]);
@@ -83,33 +75,37 @@ export default function VerInvitados({ navigation }) {
         //console.log(res.data)
         //console.log("nombre de invitado: "+res.data.name)
       })
-      .catch((error) => console.log(error));
-  };
+      .catch(error =>
+        console.log(error)
+      );
+
+  }
+
+
 
   const deleteObserver = async (mail) => {
-    const token = await AsyncStorage.getItem("@storage_Key");
+
+    const token = await AsyncStorage.getItem('@storage_Key');
 
     let headers = {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    };
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    }
 
-    const peticion = await axios
-      .delete(
-        "http://192.168.0.133:8081/app_movil_sensor/api/device/" +
-          codeDisp +
-          "/user/" +
-          mail,
-        headers
-      )
-      .then(async (res) => {
+
+    const peticion = await axios.delete("https://proyecto-backend-movil-production.up.railway.app/app_movil_sensor/api/device/" + codeDisp + "/user/" + mail , headers)
+      .then(async res => {
         navigation.goBack();
       })
-      .catch((error) => console.log(error));
-  };
+      .catch(error =>
+        console.log(error)
+
+      );
+
+  }
 
   useEffect(() => {
     getObserver();
@@ -118,102 +114,87 @@ export default function VerInvitados({ navigation }) {
   const { colors } = useTheme();
 
   return (
-    <View
-      /*style={Styles.container}*/ style={[
-        Styles.container,
-        { backgroundColor: colors.background },
-      ]}
-    >
+    <View /*style={Styles.container}*/ style={[Styles.container, { backgroundColor: colors.background }]}>
       <View style={{ alignItems: "center", marginTop: 20 }}>
         <TextoDripsy
           sx={{
             fontSize: [20, 25, 30],
             fontWeight: "bold",
-            color: colors.text,
+            color: colors.text
           }}
         >
           {nombreDisp}
         </TextoDripsy>
       </View>
 
-      <View
-        style={[Styles.invitadosContainer, { backgroundColor: colors.card }]}
-      >
-        {isInv ? (
+
+      <View style={[Styles.invitadosContainer, {backgroundColor: colors.card}]}>
+
+
+        {isInv ?
+
           <ScrollView>
             {invitado.map((dato, index) => {
-              nombreInvitado = dato.name;
-              email = dato.email;
 
-              return (
-                <Invitado
-                  key={index}
-                  nombreInvitado={dato.name}
-                  apellidoInvitado={dato.lastname}
-                  fechaAgregacion={dato.created}
-                  botonTacho={handleOnPress}
-                />
-              );
+              nombreInvitado = dato.name
+              email = dato.email
+
+              return <Invitado key={index} nombreInvitado={dato.name} apellidoInvitado={dato.lastname} fechaAgregacion={dato.created}
+                botonTacho={handleOnPress} />
+
             })}
-          </ScrollView>
-        ) : (
-          <View style={{ marginTop: 20 }}>
-            <Text
-              style={{
-                textAlign: "center",
-                fontWeight: "bold",
-                color: colors.text,
-              }}
-            >
-              No ha invitado a nadie al dispositivo
-            </Text>
-          </View>
-        )}
+          </ScrollView> :
 
-        <Modal animationType="slide" transparent={true} visible={open}>
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
+
+          <View style={{ marginTop: 20 }}>
+            <Text style={{ textAlign: "center", fontWeight: "bold", color: colors.text }}>No ha invitado a nadie al dispositivo</Text>
+          </View>
+        }
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={open}
+        >
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <View style={Styles.modalView}>
-              <Text>
-                ¿Esta seguro de querer desvincular a{" "}
-                <Text style={{ fontWeight: "bold" }}>{nombreInvitado} </Text>
-                del dispositivo:{" "}
-                <Text style={{ fontWeight: "bold" }}>{nombreDisp}</Text>?
-              </Text>
+
+              <Text>¿Esta seguro de querer desvincular a <Text style={{ fontWeight: "bold" }}>{nombreInvitado} </Text>
+                del dispositivo: <Text style={{ fontWeight: "bold" }}>{nombreDisp}</Text>?</Text>
 
               <View style={{ flexDirection: "row", marginTop: 20 }}>
-                <View>
-                  <Boton
-                    text="Aceptar"
-                    // onPress={() => navigation.goBack()}
+
+                <View >
+                  <Boton text="Aceptar"
+                   // onPress={() => navigation.goBack()}
                     onPress={() => deleteObserver(email)}
                     type="aceptar"
                   />
                 </View>
 
-                <View>
-                  <Boton
-                    text="Cancelar"
+                <View >
+                  <Boton text="Cancelar"
                     onPress={handleOnPress}
                     type="cancelar"
                   />
                 </View>
+
               </View>
+
             </View>
           </View>
+
         </Modal>
 
         <View style={Styles.agregarInvitado}>
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("AgregarInvitado", { codigoDisp: codeDisp })
-            }
+            onPress={() => navigation.navigate("AgregarInvitado", { codigoDisp: codeDisp })}
           >
-            <FontAwesomeIcon icon={faUserPlus} style={{ color: "white" }} />
+            <FontAwesomeIcon icon={faUserPlus} style={{color: "white"}}/>
           </TouchableOpacity>
         </View>
       </View>
+
     </View>
   );
 }
@@ -266,10 +247,10 @@ const Styles = StyleSheet.create({
     width: "93%",
     showOffSet: {
       width: 0,
-      height: 2,
+      height: 2
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 7,
-  },
+    elevation: 7
+  }
 });

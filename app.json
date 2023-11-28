@@ -4,10 +4,10 @@
     "slug": "proyecto-frontend-movil",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/img/ProyectoMovilLogo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/img/ProyectoMovilLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -22,12 +22,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/img/ProyectoMovilLogo.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.johanna59.proyectofrontendmovil"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/img/ProyectoMovilLogo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6c6a2d69-382a-406d-bf79-d60078c17cb2"
+      }
     }
   }
 }
