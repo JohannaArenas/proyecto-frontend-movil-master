@@ -133,13 +133,12 @@ export default function Register({ navigation }) {
       .then((res) => {
         navigation.navigate("PantallaCodigo", { mail: formData.email });
       })
-      .catch(
-        (error) => console.log(error),
-        setErrorEmail("El mail ya existe."),
-        setLoading(false),
-
-        console.log(date)
-      );
+      .catch((error) => {
+        console.log(error),
+          setErrorEmail("El mail ya existe."),
+          setLoading(false),
+          console.log(date);
+      });
   };
 
   const validateData = () => {

@@ -81,11 +81,11 @@ export default function Login({ navigation }) {
         navigation.navigate("MostrarSensores",{emailUsuario: mail})
         setErrorEmail("")
       })
-      .catch(error =>
+      .catch(error =>{
         console.log(error),
         setErrorEmail("Mail o contraseña incorrectos."),
         setLoading(false)
-      );
+  });
 
   }
 
